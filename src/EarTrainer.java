@@ -14,7 +14,7 @@ public class EarTrainer {
 
     EarTrainer(){
         intervalsCount = 14;
-        intervals = new Interval[intervalsCount];
+
         chordsCount = 8;
         chords = new Chord[chordsCount];
 
