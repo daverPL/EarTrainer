@@ -3,6 +3,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -22,11 +23,11 @@ public class Main extends Application {
     ArrayList<CheckBox> chordsCheckboxes = new ArrayList<>();
     Label titleIntervals, titleChords;
     VBox intervals, chords;
-    Button startQuiz;
+    Button startQuiz, select;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        EarTrainer M = new EarTrainer();
+        EarTrainer m = new EarTrainer();
 
         intervals = new VBox();
         intervals.setSpacing(10);
@@ -60,15 +61,24 @@ public class Main extends Application {
         root.setHgap(20);
         root.getChildren().addAll(intervals, chords);
 
+        select = new Button("Invert choice");
+        select.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                for (CheckBox c : intervalsCheckboxes)c.setSelected(!c.isSelected());
+                for (CheckBox c : chordsCheckboxes)c.setSelected(!c.isSelected());
+            }
+        });
+
         startQuiz = new Button("Start");
         startQuiz.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override public void handle(ActionEvent event) {
                 int c=0;
                 for (CheckBox k : intervalsCheckboxes) {
                     if (k.isSelected()) {
-                        for (Interval j : M.intervals) {
+                        for (Interval j : m.intervals) {
                             if (j.getFullName().equals(k.getText())) {
-                                M.UserIntervals.add(j);
+                                m.UserIntervals.add(j);
                                 c++;
                             }
                         }
@@ -76,28 +86,27 @@ public class Main extends Application {
                 }
                 for (CheckBox k : chordsCheckboxes) {
                     if (k.isSelected()) {
-                        for (Chord j : M.chords) {
+                        for (Chord j : m.chords) {
                             if (j.getFullName().equals(k.getText())) {
-                                M.UserChords.add(j);
+                                m.UserChords.add(j);
                                 c++;
                             }
                         }
                     }
                 }
-
                 //System.out.print(c);
-                //tu wstawic okno zamiast petli
-                while(true){
-                    try {
-                        M.question();
-                    }catch (IOException ex){}
-
+                if(c<2){
+                    Alert tooFew = new Alert(Alert.AlertType.ERROR, "Select at least two items!");
+                    tooFew.showAndWait();
+                    return;
                 }
+                Quiz.question(m, primaryStage);
+                primaryStage.show();
             }
         });
 
         root.getChildren().add(startQuiz);
-
+        root.getChildren().add(select);
 
 
         Scene scene = new Scene(root, 700, 500);
