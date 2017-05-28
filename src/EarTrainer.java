@@ -4,34 +4,29 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+
 public class EarTrainer {
-    Interval [] intervals ;
-    Chord [] chords ;
-    PlayerPreferences userPreferences;
-    int intervalsCount, chordsCount;
-    ArrayList <Integer> UserIntervalsNumbers;
-    ArrayList <Integer> UserChordsNumbers;
+    public Interval [] intervals ;
+    public Chord [] chords ;
+    public PlayerPreferences userPreferences;
+    public int intervalsCount, chordsCount;
+    public ArrayList <Interval> UserIntervals;
+    public ArrayList <Chord> UserChords;
 
     EarTrainer(){
         intervalsCount = 14;
-
+        intervals = new Interval[intervalsCount];
         chordsCount = 8;
         chords = new Chord[chordsCount];
 
         // Default preferences in future set after picking in UI
-        UserIntervalsNumbers = new ArrayList<>();
-        UserChordsNumbers = new ArrayList<>();
+        UserIntervals = new ArrayList<>();
+        UserChords = new ArrayList<>();
         ArrayList <Integer> Speeds = new ArrayList<>();
         ArrayList <Integer> Directions = new ArrayList<>();
         ArrayList <Integer> Types = new ArrayList<>();
 
-        UserIntervalsNumbers.add(1);
-        UserIntervalsNumbers.add(3);
-        UserIntervalsNumbers.add(5);
-
-        UserChordsNumbers.add(0);
-        UserChordsNumbers.add(1);
-        UserChordsNumbers.add(3);
 
         Speeds.add(0);
         Directions.add(0);
@@ -52,18 +47,18 @@ public class EarTrainer {
         int random = rand.nextInt(userPreferences.types.size());
         String correctAnswer;
 
-        if(userPreferences.types.get(random) == 0) {
+        if(userPreferences.types.get(random) == 0 || UserChords.isEmpty()) {
             //rand from intervals
-            random = rand.nextInt(UserIntervalsNumbers.size());
+            random = rand.nextInt(UserIntervals.size());
 
-            Play.toPlay(userPreferences, intervals[UserIntervalsNumbers.get(random)]);
-            correctAnswer = intervals[UserIntervalsNumbers.get(random)].getShortName();
+            Play.toPlay(userPreferences, UserIntervals.get(random));
+            correctAnswer = UserIntervals.get(random).getShortName();
         }else {
             //rand from chords
-            random = rand.nextInt(UserChordsNumbers.size());
+            random = rand.nextInt(UserChords.size());
 
-            Play.toPlay(userPreferences, chords[UserChordsNumbers.get(random)]);
-            correctAnswer = chords[UserChordsNumbers.get(random)].getShortName();
+            Play.toPlay(userPreferences, UserChords.get(random));
+            correctAnswer = UserChords.get(random).getShortName();
         }
 
         System.out.println("Write answer:");
