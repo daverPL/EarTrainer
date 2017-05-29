@@ -3,10 +3,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -21,8 +18,8 @@ public class Main extends Application {
 
     ArrayList<CheckBox> intervalsCheckboxes = new ArrayList<>();
     ArrayList<CheckBox> chordsCheckboxes = new ArrayList<>();
-    Label titleIntervals, titleChords;
-    VBox intervals, chords;
+    Label titleIntervals, titleChords, titlePreferences;
+    VBox intervals, chords, preferences;
     Button startQuiz, select;
 
     @Override
@@ -33,10 +30,13 @@ public class Main extends Application {
         intervals.setSpacing(10);
         intervals.setPadding(new Insets(20));
 
-        //vbox for labels
         chords = new VBox();
         chords.setSpacing(10);
         chords.setPadding(new Insets(20));
+
+        preferences = new VBox();
+        preferences.setSpacing(10);
+        preferences.setPadding(new Insets(20));
 
         for(int i = 0; i < intervalsLabels.length; i++) {
             CheckBox chinButton = new CheckBox(intervalsLabels[i]);
@@ -48,18 +48,29 @@ public class Main extends Application {
             chordsCheckboxes.add(chinButton);
         }
 
+        // Preferences:
+        CheckBox directionUp = new CheckBox("Direction: up");
+        CheckBox directionDown = new CheckBox("Direction: down");
+        Spinner spinner = new Spinner<Integer>(1, 20, 10);
+        Label label = new Label("Number of questions:");
+        Label blank = new Label(" ");
+
+
         titleIntervals = new Label("Select intervals to play: ");
         titleChords = new Label("Select chords to play: ");
-
+        titlePreferences = new Label("Select playing preferences: ");
         intervals.getChildren().addAll(titleIntervals);
         intervals.getChildren().addAll(intervalsCheckboxes);
         chords.getChildren().addAll(titleChords);
         chords.getChildren().addAll(chordsCheckboxes);
+        preferences.getChildren().addAll(titlePreferences);
+        preferences.getChildren().addAll(directionUp, directionDown, blank, label, spinner);
+
 
         //create main container and add 2 vboxes to it
         FlowPane root = new FlowPane();
         root.setHgap(20);
-        root.getChildren().addAll(intervals, chords);
+        root.getChildren().addAll(intervals, chords, preferences);
 
         select = new Button("Invert choice");
         select.setOnAction(new EventHandler<ActionEvent>() {
@@ -97,6 +108,19 @@ public class Main extends Application {
                     }
                 }
 
+                m.numberOfQuestions = ((int) spinner.getValue());
+                System.out.println(m.numberOfQuestions);
+
+                m.Directions.clear();
+                if(!directionDown.isSelected() && !directionUp.isSelected()) {
+                    Alert tooFew = new Alert(Alert.AlertType.ERROR, "Select at least one direction!");
+                    tooFew.showAndWait();
+                    return;
+                } else {
+                    if(directionUp.isSelected()) m.Directions.add(0);
+                    if(directionDown.isSelected()) m.Directions.add(1);
+                }
+
                 if(c<2){
                     Alert tooFew = new Alert(Alert.AlertType.ERROR, "Select at least two items!");
                     tooFew.showAndWait();
@@ -107,11 +131,11 @@ public class Main extends Application {
             }
         });
 
-        root.getChildren().add(startQuiz);
-        root.getChildren().add(select);
+        preferences.getChildren().add(startQuiz);
+        preferences.getChildren().add(select);
 
 
-        Scene scene = new Scene(root, 700, 500);
+        Scene scene = new Scene(root, 640, 450);
         primaryStage.setTitle("Ear Trainer");
         primaryStage.setScene(scene);
         primaryStage.show();

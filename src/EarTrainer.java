@@ -13,6 +13,8 @@ public class EarTrainer {
     public int intervalsCount, chordsCount;
     public ArrayList <Interval> UserIntervals;
     public ArrayList <Chord> UserChords;
+    public int numberOfQuestions;
+    public ArrayList <Integer> Directions = new ArrayList<>();
 
     EarTrainer(){
         intervalsCount = 14;
@@ -24,13 +26,10 @@ public class EarTrainer {
         UserIntervals = new ArrayList<>();
         UserChords = new ArrayList<>();
         ArrayList <Integer> Speeds = new ArrayList<>();
-        ArrayList <Integer> Directions = new ArrayList<>();
         ArrayList <Integer> Types = new ArrayList<>();
 
 
         Speeds.add(0);
-        Directions.add(0);
-        Directions.add(1);
         Types.add(0);
         Types.add(1);
 

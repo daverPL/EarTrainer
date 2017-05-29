@@ -1,7 +1,9 @@
 import com.sun.tools.javac.comp.Flow;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -10,7 +12,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,7 +25,11 @@ import java.util.Random;
 
 public class Quiz {
 
-    public static NamedSequence getOne(EarTrainer m){
+    public static NamedSequence ans;
+    public static int correctAnswers = 0;
+    public static int allAnswers = 0;
+
+    public static void getOne(EarTrainer m){
 
         Random rand = new Random();
         int random = rand.nextInt(m.userPreferences.types.size());
@@ -34,7 +45,7 @@ public class Quiz {
             };
 
             new Thread(r).start();
-            return  m.UserIntervals.get(random1);
+            ans = m.UserIntervals.get(random1);
         } else {
             //rand from chords
             final int random2 = rand.nextInt(m.UserChords.size());
@@ -45,28 +56,34 @@ public class Quiz {
             };
 
             new Thread(r).start();
-            return m.UserChords.get(random2);
+            ans = m.UserChords.get(random2);
         }
 
     }
 
     public static void question(EarTrainer m, Stage stag2e) {
         Stage stage = new Stage();
-        Group root = new Group();
+        VBox root = new VBox();
+        root.setSpacing(20);
 
-        Scene scene = new Scene(root, 500, 500, Color.WHITE);
+        Scene scene = new Scene(root, 700, 300, Color.WHITE);
         stage.setScene(scene);
         FlowPane butony;
 
-        NamedSequence ans = getOne(m);
+        getOne(m);
+
+        Text answer = new Text();
+        answer.setFont(Font.font ("Verdana", 20));
+        Text score = new Text();
+        score.setText("0/0");
+        score.setFont(Font.font ("Verdana", 20));
+
 
         butony = new FlowPane();
-        butony.setPrefWrapLength(460);
+        butony.setPrefWrapLength(680);
         butony.setVgap(5);
         butony.setHgap(10);
-        //butony.setSpacing(10);
-        //butony.setPadding(new Insets(20));
-        System.out.println("elo");
+
         ArrayList<NamedSequence> l = new ArrayList<>();
 
         l.addAll(m.UserIntervals);
@@ -79,16 +96,31 @@ public class Quiz {
                 public void handle(ActionEvent event) {
                     if (ans.getFullName().equals(b.getText())) {
                         System.out.println("yay");
+                        correctAnswers++;
                         ans.addScore(true);
-                        Alert tooFew = new Alert(Alert.AlertType.CONFIRMATION, "OK!");
-                        tooFew.showAndWait();
-                        stage.close();
+                        answer.setText("True! " + ans.getFullName());
+                        answer.setFill(Color.GREEN);
                     } else {
                         System.out.println("nay");
                         ans.addScore(false);
-                        Alert tooFew = new Alert(Alert.AlertType.ERROR, "Wrong!");
+                        answer.setText("False! Correct: " + ans.getFullName());
+                        answer.setFill(Color.RED);
+                    }
+                    allAnswers++;
+
+                    FadeTransition ft = new FadeTransition(Duration.millis(2000), answer);
+                    ft.setFromValue(1.0);
+                    ft.setToValue(0.0);
+                    ft.play();
+                    score.setText(correctAnswers + "/" + allAnswers);
+
+                    if(allAnswers == m.numberOfQuestions) {
+                        String info = "End of Quiz! Your score: " + correctAnswers + "/" + allAnswers;
+                        Alert tooFew = new Alert(Alert.AlertType.CONFIRMATION, info);
                         tooFew.showAndWait();
                         stage.close();
+                    } else {
+                        getOne(m);
                     }
                 }
             });
@@ -100,14 +132,15 @@ public class Quiz {
         rep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //Play.toPlay(m.userPreferences, ans);
+                //Play.toPlay(m.userPreferences, );
             }
         });
 
-
+        butony.setAlignment(Pos.TOP_CENTER);
         root.getChildren().add(butony);
+        root.getChildren().addAll(answer, score);
+        root.setAlignment(Pos.CENTER);
+        //stage.setCenter(vbox2);
         stage.show();
-
-
     }
 }
