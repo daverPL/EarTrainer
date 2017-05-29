@@ -43,7 +43,6 @@ public class Quiz {
                     Play.toPlay(m.userPreferences, m.UserIntervals.get(random1));
                 }
             };
-
             new Thread(r).start();
             ans = m.UserIntervals.get(random1);
         } else {
@@ -54,7 +53,6 @@ public class Quiz {
                     Play.toPlay(m.userPreferences, m.UserChords.get(random2));
                 }
             };
-
             new Thread(r).start();
             ans = m.UserChords.get(random2);
         }
@@ -100,11 +98,25 @@ public class Quiz {
                         ans.addScore(true);
                         answer.setText("True! " + ans.getFullName());
                         answer.setFill(Color.GREEN);
+                        if (m.CorrectAnswers.containsKey(ans.getFullName())) {
+                            Integer n = m.CorrectAnswers.get(ans.getFullName());
+                            m.CorrectAnswers.remove(ans.getFullName());
+                            m.CorrectAnswers.put(ans.getFullName(), n+1);
+                        } else {
+                            m.CorrectAnswers.put(ans.getFullName(), 1);
+                        }
                     } else {
                         System.out.println("nay");
                         ans.addScore(false);
                         answer.setText("False! Correct: " + ans.getFullName());
                         answer.setFill(Color.RED);
+                        if (m.WrongAnswers.containsKey(ans.getFullName())) {
+                            Integer n = m.WrongAnswers.get(ans.getFullName());
+                            m.WrongAnswers.remove(ans.getFullName());
+                            m.WrongAnswers.put(ans.getFullName(), n+1);
+                        } else {
+                            m.WrongAnswers.put(ans.getFullName(), 1);
+                        }
                     }
                     allAnswers++;
 
@@ -116,7 +128,9 @@ public class Quiz {
 
                     if(allAnswers == m.numberOfQuestions) {
                         String info = "End of Quiz! Your score: " + correctAnswers + "/" + allAnswers;
-                        Alert tooFew = new Alert(Alert.AlertType.CONFIRMATION, info);
+                        allAnswers = 0;
+                        correctAnswers = 0;
+                        Alert tooFew = new Alert(Alert.AlertType.INFORMATION, info);
                         tooFew.showAndWait();
                         stage.close();
                     } else {
