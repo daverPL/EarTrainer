@@ -74,6 +74,7 @@ public class Main extends Application {
         startQuiz.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 int c=0;
+                m.UserIntervals.clear();
                 for (CheckBox k : intervalsCheckboxes) {
                     if (k.isSelected()) {
                         for (Interval j : m.intervals) {
@@ -84,6 +85,7 @@ public class Main extends Application {
                         }
                     }
                 }
+                m.UserChords.clear();
                 for (CheckBox k : chordsCheckboxes) {
                     if (k.isSelected()) {
                         for (Chord j : m.chords) {
@@ -94,7 +96,7 @@ public class Main extends Application {
                         }
                     }
                 }
-                //System.out.print(c);
+
                 if(c<2){
                     Alert tooFew = new Alert(Alert.AlertType.ERROR, "Select at least two items!");
                     tooFew.showAndWait();
