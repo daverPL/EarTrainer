@@ -146,13 +146,16 @@ public class Quiz {
         rep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //Play.toPlay(m.userPreferences, );
+                //System.out.println(Quiz.ans.getClass().getName());
+                if(Quiz.ans.getClass().getName().equals("Interval"))Play.toPlay(m.userPreferences, (Interval)Quiz.ans);
+                if(Quiz.ans.getClass().getName().equals("Chord"))Play.toPlay(m.userPreferences, (Chord)Quiz.ans);
             }
         });
-
+        root.getChildren().add(rep);
         butony.setAlignment(Pos.TOP_CENTER);
         root.getChildren().add(butony);
         root.getChildren().addAll(answer, score);
+
         root.setAlignment(Pos.CENTER);
         //stage.setCenter(vbox2);
         stage.show();

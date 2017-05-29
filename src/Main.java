@@ -188,7 +188,7 @@ public class Main extends Application {
 
         preferences.getChildren().addAll(startQuiz, select, sessionStats);
 
-        Scene scene = new Scene(root, 640, 450);
+        Scene scene = new Scene(root, 640, 750);
         primaryStage.setTitle("Ear Trainer");
         primaryStage.setScene(scene);
         primaryStage.show();
