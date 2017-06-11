@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -63,6 +65,14 @@ public class Main extends Application {
         Label label = new Label("Number of questions:");
         Label blank = new Label(" ");
 
+        ListView<String> instruments = new ListView<String>();
+
+
+        instruments.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        ObservableList<String> insts =FXCollections.observableArrayList ("PIANO", "ELECTRIC_JAZZ_GUITAR", "FLUTE", "CELESTA", "CHURCH_ORGAN", "VIOLIN", "HARMONICA", "CELLO", "ROCK_ORGAN", "ACOUSTIC_BASS", "TROMBONE",  "TUBA", "CONTRABASS");
+        instruments.setPrefHeight(insts.size() * 24 + 2);
+
+        instruments.setItems(insts);
 
         titleIntervals = new Label("Select intervals to play: ");
         titleChords = new Label("Select chords to play: ");
@@ -72,7 +82,7 @@ public class Main extends Application {
         chords.getChildren().addAll(titleChords);
         chords.getChildren().addAll(chordsCheckboxes);
         preferences.getChildren().addAll(titlePreferences);
-        preferences.getChildren().addAll(directionUp, directionDown, blank, label, spinner);
+        preferences.getChildren().addAll(directionUp, directionDown, blank, label, spinner, instruments);
 
 
         //create main container and add 2 vboxes to it
@@ -134,6 +144,10 @@ public class Main extends Application {
                     tooFew.showAndWait();
                     return;
                 }
+
+                m.userPreferences.instrument = instruments.getSelectionModel().getSelectedItem();
+                if(m.userPreferences.instrument == null)m.userPreferences.instrument = "PIANO";
+
                 Quiz.question(m, primaryStage);
                 primaryStage.show();
             }
@@ -182,7 +196,7 @@ public class Main extends Application {
 
                 newRoot.getChildren().addAll(correctBox, wrongBox);
                 newRoot.setAlignment(Pos.TOP_CENTER);
-                Scene scene2 = new Scene(newRoot, 600, 400);
+                Scene scene2 = new Scene(newRoot, 800, 550);
                 Stage stage2 = new Stage();
                 stage2.setTitle("Stats");
                 stage2.setScene(scene2);
@@ -191,11 +205,9 @@ public class Main extends Application {
             }
         });
 
-
-
         preferences.getChildren().addAll(startQuiz, select, sessionStats);
 
-        Scene scene = new Scene(root, 640, 750);
+        Scene scene = new Scene(root, 800, 800);
         primaryStage.setTitle("Ear Trainer");
         primaryStage.setScene(scene);
         primaryStage.show();

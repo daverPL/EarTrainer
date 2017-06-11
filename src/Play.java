@@ -11,15 +11,15 @@ public class Play {
         Integer rand = randomize.nextInt(20);
         rand += 50;
         Integer direction = randomize.nextInt(pref.directions.size());
-        String notes;
+        String notes, instrument = "I["+ pref.instrument +"] ";
 
         if(pref.directions.get(direction) == 0) {  // play up
 
-            notes = rand.toString() + " " + (rand+i.getDistance());
+            notes = instrument + rand.toString() + " " + (rand+i.getDistance());
 
         } else { //play down
+            notes = instrument + (rand+i.getDistance()) + " " + rand.toString();
 
-            notes = (rand+i.getDistance()) + " " + rand.toString();
         }
 
         player.play(notes);
@@ -34,7 +34,9 @@ public class Play {
         Integer rand = randomize.nextInt(20);
         rand += 45;
         Integer direction = randomize.nextInt(pref.directions.size());
+        String instrument = "I["+ pref.instrument +"] ";
         StringBuilder notes = new StringBuilder();
+        notes.append(instrument);
         notes.append(rand.toString() + " ");
 
         for(int i = 0; i < c.intervals.size(); i++) {
