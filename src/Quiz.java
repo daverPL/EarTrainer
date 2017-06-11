@@ -98,6 +98,9 @@ public class Quiz {
                         ans.addScore(true);
                         answer.setText("True! " + ans.getFullName());
                         answer.setFill(Color.GREEN);
+
+                        Stats.correctAnswerToday(m);
+
                         if (m.CorrectAnswers.containsKey(ans.getFullName())) {
                             Integer n = m.CorrectAnswers.get(ans.getFullName());
                             m.CorrectAnswers.remove(ans.getFullName());
@@ -110,6 +113,9 @@ public class Quiz {
                         ans.addScore(false);
                         answer.setText("False! Correct: " + ans.getFullName());
                         answer.setFill(Color.RED);
+
+                        Stats.wrongAnswerToday(m);
+
                         if (m.WrongAnswers.containsKey(ans.getFullName())) {
                             Integer n = m.WrongAnswers.get(ans.getFullName());
                             m.WrongAnswers.remove(ans.getFullName());

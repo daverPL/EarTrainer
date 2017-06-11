@@ -10,8 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -25,10 +23,16 @@ public class Main extends Application {
     Label titleIntervals, titleChords, titlePreferences;
     VBox intervals, chords, preferences;
     Button startQuiz, select, sessionStats;
+    EarTrainer m = new EarTrainer();
+
+    @Override
+    public void stop() throws Exception {
+        m.saveStats();
+        super.stop();
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        EarTrainer m = new EarTrainer();
 
         intervals = new VBox();
         intervals.setSpacing(10);
@@ -139,6 +143,7 @@ public class Main extends Application {
         sessionStats.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                Stats.showStats(m);////////////////
                 FlowPane newRoot = new FlowPane();
                 root.setHgap(20);
                 VBox correctBox = new VBox();
@@ -185,6 +190,8 @@ public class Main extends Application {
 
             }
         });
+
+
 
         preferences.getChildren().addAll(startQuiz, select, sessionStats);
 

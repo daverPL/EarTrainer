@@ -1,6 +1,8 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import javafx.util.Pair;
+
+import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -16,8 +18,12 @@ public class EarTrainer {
     public ArrayList <Chord> UserChords;
     public int numberOfQuestions;
     public ArrayList <Integer> Directions = new ArrayList<>();
-    public HashMap <String, Integer> CorrectAnswers = new HashMap<>();
-    public HashMap <String, Integer> WrongAnswers = new HashMap<>();
+    public HashMap <String, Integer> CorrectAnswers;
+    public HashMap <String, Integer> WrongAnswers;
+    public HashMap <LocalDate, Pair<Integer, Integer>> statsByDay; //key - calkowita ilosc, val poprawne
+    public HashMap <LocalDate, HashMap <String, Integer>> correctByDay;
+    public HashMap <LocalDate, HashMap <String, Integer>> wrongByDay;
+
 
     EarTrainer(){
         intervalsCount = 14;
@@ -41,8 +47,41 @@ public class EarTrainer {
         // Setting set of all chords and intervals:
         setIntervals();
         setChords();
+        loadStats();
     }
 
+    void loadStats(){
+        try{
+            FileInputStream fis = new FileInputStream("stats");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            statsByDay = (HashMap <LocalDate, Pair<Integer, Integer>>) ois.readObject();
+            correctByDay = (HashMap <LocalDate, HashMap <String, Integer>>) ois.readObject();
+            wrongByDay = (HashMap <LocalDate, HashMap <String, Integer>>) ois.readObject();
+        }catch (FileNotFoundException f){
+            statsByDay = new HashMap<>();
+            correctByDay = new HashMap<>();
+            wrongByDay = new HashMap<>();
+            System.out.println("catch");
+        }catch(Exception e){}
+
+        if(!correctByDay.containsKey(LocalDate.now()))correctByDay.put(LocalDate.now(), new HashMap<>());
+        if(!wrongByDay.containsKey(LocalDate.now()))wrongByDay.put(LocalDate.now(), new HashMap<>());
+
+        CorrectAnswers = correctByDay.get(LocalDate.now());
+        WrongAnswers = wrongByDay.get(LocalDate.now());
+    }
+
+    void saveStats() throws IOException{
+        FileOutputStream fos = new FileOutputStream("stats", false);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(statsByDay);
+        oos.writeObject(correctByDay);
+        oos.writeObject(wrongByDay);
+        oos.close();
+        fos.close();
+
+
+    }
 
     boolean question() throws IOException{
         Random rand = new Random();
