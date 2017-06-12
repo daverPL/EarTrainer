@@ -3,10 +3,9 @@ import org.jfugue.player.Player;
 import java.util.Random;
 
 public class Play {
-    public static void toPlay(PlayerPreferences pref, Interval i){
+    public static String toPlay(PlayerPreferences pref, Interval i){
         //TODO: Implement different speeds and unisono option
 
-        Player player = new Player();
         Random randomize = new Random();
         Integer rand = randomize.nextInt(20);
         rand += 50;
@@ -22,14 +21,12 @@ public class Play {
 
         }
 
-        player.play(notes);
+        return notes;
     }
 
-    public static void toPlay(PlayerPreferences pref, Chord c){
+    public static String toPlay(PlayerPreferences pref, Chord c){
         //TODO: Implement different speeds and unisono option
-        //TODO: Think about playing ind different directions?
 
-        Player player = new Player();
         Random randomize = new Random();
         Integer rand = randomize.nextInt(20);
         rand += 45;
@@ -44,7 +41,13 @@ public class Play {
             notes.append(rand.toString() + " ");
         }
 
-        player.play(String.valueOf(notes));
+        return String.valueOf(notes);
+    }
+
+
+    public static void playNotes(String notes) {
+        Player player = new Player();
+        player.play(notes);
     }
 
 }

@@ -28,19 +28,22 @@ public class Quiz {
     public static NamedSequence ans;
     public static int correctAnswers = 0;
     public static int allAnswers = 0;
+    public static String lastNotes;
 
     public static void getOne(EarTrainer m){
 
         Random rand = new Random();
         int random = rand.nextInt(m.userPreferences.types.size());
 
-        if (m.userPreferences.types.get(random) == 0 || m.UserChords.isEmpty()) {
+        if ((m.userPreferences.types.get(random) == 0 || m.UserChords.isEmpty()) && !m.UserIntervals.isEmpty()) {
             //rand from intervals
             final int random1 = rand.nextInt(m.UserIntervals.size());
-            System.out.println("Wylosowany:" + m.UserIntervals.get(random1).getFullName());
+
+            lastNotes = Play.toPlay(m.userPreferences, m.UserIntervals.get(random1));
+
             Runnable r = new Runnable() {
                 public void run() {
-                    Play.toPlay(m.userPreferences, m.UserIntervals.get(random1));
+                    Play.playNotes(lastNotes);
                 }
             };
             new Thread(r).start();
@@ -48,9 +51,10 @@ public class Quiz {
         } else {
             //rand from chords
             final int random2 = rand.nextInt(m.UserChords.size());
+            lastNotes = Play.toPlay(m.userPreferences, m.UserChords.get(random2));
             Runnable r = new Runnable() {
                 public void run() {
-                    Play.toPlay(m.userPreferences, m.UserChords.get(random2));
+                    Play.playNotes(lastNotes);
                 }
             };
             new Thread(r).start();
@@ -152,11 +156,15 @@ public class Quiz {
         rep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //System.out.println(Quiz.ans.getClass().getName());
-                if(Quiz.ans.getClass().getName().equals("Interval"))Play.toPlay(m.userPreferences, (Interval)Quiz.ans);
-                if(Quiz.ans.getClass().getName().equals("Chord"))Play.toPlay(m.userPreferences, (Chord)Quiz.ans);
+                Runnable r = new Runnable() {
+                    public void run() {
+                        Play.playNotes(lastNotes);
+                    }
+                };
+                new Thread(r).start();
             }
         });
+
         root.getChildren().add(rep);
         butony.setAlignment(Pos.TOP_CENTER);
         root.getChildren().add(butony);
