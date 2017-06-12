@@ -46,6 +46,7 @@ public class Quiz {
                     Play.playNotes(lastNotes);
                 }
             };
+
             new Thread(r).start();
             ans = m.UserIntervals.get(random1);
         } else {
@@ -70,7 +71,7 @@ public class Quiz {
 
         Scene scene = new Scene(root, 700, 300, Color.WHITE);
         stage.setScene(scene);
-        FlowPane butony;
+        FlowPane buttons;
 
         getOne(m);
 
@@ -81,10 +82,10 @@ public class Quiz {
         score.setFont(Font.font ("Verdana", 20));
 
 
-        butony = new FlowPane();
-        butony.setPrefWrapLength(680);
-        butony.setVgap(5);
-        butony.setHgap(10);
+        buttons = new FlowPane();
+        buttons.setPrefWrapLength(680);
+        buttons.setVgap(5);
+        buttons.setHgap(10);
 
         ArrayList<NamedSequence> l = new ArrayList<>();
 
@@ -97,7 +98,6 @@ public class Quiz {
                 @Override
                 public void handle(ActionEvent event) {
                     if (ans.getFullName().equals(b.getText())) {
-                        System.out.println("yay");
                         correctAnswers++;
                         ans.addScore(true);
                         answer.setText("True! " + ans.getFullName());
@@ -113,7 +113,6 @@ public class Quiz {
                             m.CorrectAnswers.put(ans.getFullName(), 1);
                         }
                     } else {
-                        System.out.println("nay");
                         ans.addScore(false);
                         answer.setText("False! Correct: " + ans.getFullName());
                         answer.setFill(Color.RED);
@@ -149,7 +148,7 @@ public class Quiz {
                 }
             });
 
-            butony.getChildren().add(b);
+            buttons.getChildren().add(b);
         }
 
         Button rep = new Button("Replay");
@@ -161,13 +160,14 @@ public class Quiz {
                         Play.playNotes(lastNotes);
                     }
                 };
+
                 new Thread(r).start();
             }
         });
 
         root.getChildren().add(rep);
-        butony.setAlignment(Pos.TOP_CENTER);
-        root.getChildren().add(butony);
+        buttons.setAlignment(Pos.TOP_CENTER);
+        root.getChildren().add(buttons);
         root.getChildren().addAll(answer, score);
 
         root.setAlignment(Pos.CENTER);

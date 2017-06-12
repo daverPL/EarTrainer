@@ -66,7 +66,7 @@ public class Stats {
                     Label titleCorrect= new Label();
                     titleCorrect.setText("Correct answers stats:");
                     Label subtitleCorrect= new Label();
-                    subtitleCorrect.setText("Interval: Number of answers");
+                    subtitleCorrect.setText("Interval / Number of answers");
                     correctBox.getChildren().addAll(titleCorrect, subtitleCorrect);
 
                     for (Map.Entry<String, Integer> entry : m.correctByDay.get(d.getValue()).entrySet()) {
@@ -101,7 +101,7 @@ public class Stats {
 
         newRoot.getChildren().addAll(correctBox, wrongBox);
         newRoot.setAlignment(Pos.TOP_CENTER);
-        Scene scene2 = new Scene(newRoot, 600, 400);
+        Scene scene2 = new Scene(newRoot, 800, 400);
         Stage stage2 = new Stage();
         stage2.setTitle("Stats");
         stage2.setScene(scene2);

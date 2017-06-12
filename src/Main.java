@@ -24,7 +24,7 @@ public class Main extends Application {
     ArrayList<CheckBox> chordsCheckboxes = new ArrayList<>();
     Label titleIntervals, titleChords, titlePreferences;
     VBox intervals, chords, preferences;
-    Button startQuiz, select, sessionStats;
+    Button startQuiz, select, sessionStats, tutorial;
     EarTrainer m = new EarTrainer();
 
     @Override
@@ -127,7 +127,6 @@ public class Main extends Application {
                 }
 
                 m.numberOfQuestions = ((int) spinner.getValue());
-                System.out.println(m.numberOfQuestions);
 
                 m.Directions.clear();
                 if(!directionDown.isSelected() && !directionUp.isSelected()) {
@@ -157,57 +156,21 @@ public class Main extends Application {
         sessionStats.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Stats.showStats(m);////////////////
-                FlowPane newRoot = new FlowPane();
-                root.setHgap(20);
-                VBox correctBox = new VBox();
-                correctBox.setPadding(new Insets(20));
-                VBox wrongBox = new VBox();
-                wrongBox.setPadding(new Insets(20));
-
-                Label titleCorrect= new Label();
-                titleCorrect.setText("Correct answers stats:");
-                Label subtitleCorrect= new Label();
-                subtitleCorrect.setText("Interval: Number of answers");
-                correctBox.getChildren().addAll(titleCorrect, subtitleCorrect);
-
-                for (Map.Entry<String, Integer> entry : m.CorrectAnswers.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-                    Label stat = new Label();
-                    stat.setText(key + ": " + value);
-                    correctBox.getChildren().add(stat);
-                }
-
-                Label titleWrong= new Label();
-                titleWrong.setText("Wrong answers stats:");
-                Label subtitleWrong= new Label();
-                subtitleWrong.setText("Interval / Number of answers");
-                wrongBox.getChildren().addAll(titleWrong, subtitleWrong);
-
-
-                for (Map.Entry<String, Integer> entry : m.WrongAnswers.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-                    Label stat = new Label();
-                    stat.setText(key + ": " + value);
-                    wrongBox.getChildren().add(stat);
-                }
-
-                newRoot.getChildren().addAll(correctBox, wrongBox);
-                newRoot.setAlignment(Pos.TOP_CENTER);
-                Scene scene2 = new Scene(newRoot, 800, 550);
-                Stage stage2 = new Stage();
-                stage2.setTitle("Stats");
-                stage2.setScene(scene2);
-                stage2.show();
-
+                Stats.showStats(m);
             }
         });
 
-        preferences.getChildren().addAll(startQuiz, select, sessionStats);
+        tutorial = new Button("Tutorial");
+        tutorial.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Tutorial.showTutorial(m);
+            }
+        });
 
-        Scene scene = new Scene(root, 800, 800);
+        preferences.getChildren().addAll(startQuiz, select, sessionStats, tutorial);
+
+        Scene scene = new Scene(root, 800, 680);
         primaryStage.setTitle("Ear Trainer");
         primaryStage.setScene(scene);
         primaryStage.show();

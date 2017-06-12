@@ -135,39 +135,14 @@ public class EarTrainer {
     }
 
     private void setChords() {
-        ArrayList <Interval> ChordIntervals = new ArrayList<>();
-        ChordIntervals.add(intervals[4]);
-        ChordIntervals.add(intervals[3]);
-        chords[0] = new Chord("Major Tonica", "MT", ChordIntervals);
-        ChordIntervals.clear();
-        ChordIntervals.add(intervals[3]);
-        ChordIntervals.add(intervals[5]);
-        chords[1] = new Chord("Major First", "M1", ChordIntervals);
-        ChordIntervals.clear();
-        ChordIntervals.add(intervals[5]);
-        ChordIntervals.add(intervals[4]);
-        chords[2] = new Chord("Major Second", "M2", ChordIntervals);
-        ChordIntervals.clear();
-        ChordIntervals.add(intervals[3]);
-        ChordIntervals.add(intervals[4]);
-        chords[3] = new Chord("Minor Tonica", "mT", ChordIntervals);
-        ChordIntervals.clear();
-        ChordIntervals.add(intervals[4]);
-        ChordIntervals.add(intervals[5]);
-        chords[4] = new Chord("Minor First", "m1", ChordIntervals);
-        ChordIntervals.clear();
-        ChordIntervals.add(intervals[5]);
-        ChordIntervals.add(intervals[3]);
-        chords[5] = new Chord("Minor Second", "m2", ChordIntervals);
-        ChordIntervals.clear();
-        ChordIntervals.add(intervals[3]);
-        ChordIntervals.add(intervals[3]);
-        chords[6] = new Chord("Diminished", "d", ChordIntervals);
-        ChordIntervals.clear();
-        ChordIntervals.add(intervals[4]);
-        ChordIntervals.add(intervals[4]);
-        chords[7] = new Chord("Augmented", "A", ChordIntervals);
-        //TODO: Add Dominantas
+        chords[0] = new Chord("Major Tonica", "MT", intervals[4], intervals[3]);
+        chords[1] = new Chord("Major First", "M1", intervals[3], intervals[5]);
+        chords[2] = new Chord("Major Second", "M2", intervals[5], intervals[4]);
+        chords[3] = new Chord("Minor Tonica", "mT", intervals[3], intervals[4]);
+        chords[4] = new Chord("Minor First", "m1", intervals[4], intervals[5]);
+        chords[5] = new Chord("Minor Second", "m2", intervals[5], intervals[3]);
+        chords[6] = new Chord("Diminished", "d", intervals[3], intervals[3]);
+        chords[7] = new Chord("Augmented", "A", intervals[4], intervals[4]);
     }
 
     public static void main(String[] args) throws IOException{

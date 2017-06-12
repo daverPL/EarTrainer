@@ -8,4 +8,11 @@ public class Chord extends NamedSequence{
         intervals = i;
     }
 
+    Chord(String f, String s, Interval i1, Interval i2){
+        super(f,s);
+        intervals = new ArrayList<>();
+        intervals.add(i1);
+        intervals.add(i2);
+    }
+
 }
