@@ -32,14 +32,16 @@ public class Quiz {
 
     public static void getOne(EarTrainer m){
 
+        // Choosing interval vs chord:
         Random rand = new Random();
-        int random = rand.nextInt(m.userPreferences.types.size());
+        int random = rand.nextInt(m.UserIntervals.size() + m.UserChords.size());
+        System.out.println("Mam :" + m.UserIntervals.size() + " interwalow " + m.UserChords.size() + " akordow i wylosowalem: " + random);
 
-        if ((m.userPreferences.types.get(random) == 0 || m.UserChords.isEmpty()) && !m.UserIntervals.isEmpty()) {
+        if (m.UserChords.isEmpty() && !m.UserIntervals.isEmpty() || random < m.UserIntervals.size()) {
             //rand from intervals
-            final int random1 = rand.nextInt(m.UserIntervals.size());
+            int randomInterval = rand.nextInt(m.UserIntervals.size());
 
-            lastNotes = Play.toPlay(m.userPreferences, m.UserIntervals.get(random1));
+            lastNotes = Play.toPlay(m.userPreferences, m.UserIntervals.get(randomInterval));
 
             Runnable r = new Runnable() {
                 public void run() {
@@ -48,18 +50,18 @@ public class Quiz {
             };
 
             new Thread(r).start();
-            ans = m.UserIntervals.get(random1);
+            ans = m.UserIntervals.get(randomInterval);
         } else {
             //rand from chords
-            final int random2 = rand.nextInt(m.UserChords.size());
-            lastNotes = Play.toPlay(m.userPreferences, m.UserChords.get(random2));
+            int randomChord = rand.nextInt(m.UserChords.size());
+            lastNotes = Play.toPlay(m.userPreferences, m.UserChords.get(randomChord));
             Runnable r = new Runnable() {
                 public void run() {
                     Play.playNotes(lastNotes);
                 }
             };
             new Thread(r).start();
-            ans = m.UserChords.get(random2);
+            ans = m.UserChords.get(randomChord);
         }
 
     }
