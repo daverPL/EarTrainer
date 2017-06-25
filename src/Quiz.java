@@ -29,44 +29,60 @@ public class Quiz {
     public static int correctAnswers = 0;
     public static int allAnswers = 0;
     public static String lastNotes;
+    public static int [] intervalsCounter;
+    public static int [] chordsCounter;
+    public static int expectedValueOfCounter;
 
     public static void getOne(EarTrainer m){
 
-        // Choosing interval vs chord:
-        Random rand = new Random();
-        int random = rand.nextInt(m.UserIntervals.size() + m.UserChords.size());
-        System.out.println("Mam :" + m.UserIntervals.size() + " interwalow " + m.UserChords.size() + " akordow i wylosowalem: " + random);
+        while(true) {
+            // Choosing interval vs chord:
+            Random rand = new Random();
+            int random = rand.nextInt(m.UserIntervals.size() + m.UserChords.size());
 
-        if (m.UserChords.isEmpty() && !m.UserIntervals.isEmpty() || random < m.UserIntervals.size()) {
-            //rand from intervals
-            int randomInterval = rand.nextInt(m.UserIntervals.size());
+            if (m.UserChords.isEmpty() && !m.UserIntervals.isEmpty() || random < m.UserIntervals.size()) {
+                //rand from intervals
+                int randomInterval = rand.nextInt(m.UserIntervals.size());
+                if(intervalsCounter[randomInterval] <= expectedValueOfCounter) {
+                    intervalsCounter[randomInterval]++;
+                    lastNotes = Play.toPlay(m.userPreferences, m.UserIntervals.get(randomInterval));
 
-            lastNotes = Play.toPlay(m.userPreferences, m.UserIntervals.get(randomInterval));
+                    Runnable r = new Runnable() {
+                        public void run() {
+                            Play.playNotes(lastNotes);
+                        }
+                    };
 
-            Runnable r = new Runnable() {
-                public void run() {
-                    Play.playNotes(lastNotes);
+                    new Thread(r).start();
+                    ans = m.UserIntervals.get(randomInterval);
+                    break;
                 }
-            };
 
-            new Thread(r).start();
-            ans = m.UserIntervals.get(randomInterval);
-        } else {
-            //rand from chords
-            int randomChord = rand.nextInt(m.UserChords.size());
-            lastNotes = Play.toPlay(m.userPreferences, m.UserChords.get(randomChord));
-            Runnable r = new Runnable() {
-                public void run() {
-                    Play.playNotes(lastNotes);
+            } else {
+                //rand from chords
+                int randomChord = rand.nextInt(m.UserChords.size());
+                if(chordsCounter[randomChord] <= expectedValueOfCounter) {
+                    chordsCounter[randomChord]++;
+                    lastNotes = Play.toPlay(m.userPreferences, m.UserChords.get(randomChord));
+                    Runnable r = new Runnable() {
+                        public void run() {
+                            Play.playNotes(lastNotes);
+                        }
+                    };
+                    new Thread(r).start();
+                    ans = m.UserChords.get(randomChord);
+                    break;
                 }
-            };
-            new Thread(r).start();
-            ans = m.UserChords.get(randomChord);
+            }
         }
-
     }
 
     public static void question(EarTrainer m, Stage stag2e) {
+
+        intervalsCounter = new int[m.UserIntervals.size()];
+        chordsCounter = new int[m.UserChords.size()];
+        expectedValueOfCounter = m.numberOfQuestions / (m.UserChords.size() + m.UserIntervals.size());
+
         Stage stage = new Stage();
         VBox root = new VBox();
         root.setSpacing(20);
