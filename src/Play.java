@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class Play {
     public static String toPlay(PlayerPreferences pref, Interval i){
-        //TODO: Implement different speeds and unisono option
 
         Random randomize = new Random();
         Integer rand = randomize.nextInt(20);
@@ -25,7 +24,6 @@ public class Play {
     }
 
     public static String toPlay(PlayerPreferences pref, Chord c){
-        //TODO: Implement different speeds and unisono option
 
         Random randomize = new Random();
         Integer rand = randomize.nextInt(20);
@@ -49,5 +47,4 @@ public class Play {
         Player player = new Player();
         player.play(notes);
     }
-
 }

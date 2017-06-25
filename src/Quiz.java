@@ -99,10 +99,8 @@ public class Quiz {
                 public void handle(ActionEvent event) {
                     if (ans.getFullName().equals(b.getText())) {
                         correctAnswers++;
-                        ans.addScore(true);
                         answer.setText("True! " + ans.getFullName());
                         answer.setFill(Color.GREEN);
-
                         Stats.correctAnswerToday(m);
 
                         if (m.CorrectAnswers.containsKey(ans.getFullName())) {
@@ -113,10 +111,9 @@ public class Quiz {
                             m.CorrectAnswers.put(ans.getFullName(), 1);
                         }
                     } else {
-                        ans.addScore(false);
+
                         answer.setText("False! Correct: " + ans.getFullName());
                         answer.setFill(Color.RED);
-
                         Stats.wrongAnswerToday(m);
 
                         if (m.WrongAnswers.containsKey(ans.getFullName())) {
@@ -171,7 +168,6 @@ public class Quiz {
         root.getChildren().addAll(answer, score);
 
         root.setAlignment(Pos.CENTER);
-        //stage.setCenter(vbox2);
         stage.show();
     }
 }

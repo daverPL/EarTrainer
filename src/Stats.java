@@ -23,8 +23,8 @@ import java.util.Map;
 public class Stats {
     public static void showStats(EarTrainer m) {
         FlowPane newRoot = new FlowPane();
-        //root.setHgap(20);
-
+        VBox calendarBox = new VBox();
+        calendarBox.setPadding(new Insets(20));
         VBox correctBox = new VBox();
         correctBox.setPadding(new Insets(20));
         VBox wrongBox = new VBox();
@@ -91,15 +91,13 @@ public class Stats {
                         stat.setText(key + ": " + value);
                         wrongBox.getChildren().add(stat);
                     }
-                    //newRoot.getChildren().addAll(correctBox, wrongBox);
                 }
             }
         });
         DatePickerSkin calendar = new DatePickerSkin(d);
+        calendarBox.getChildren().addAll(calendar.getPopupContent());
 
-        newRoot.getChildren().addAll(calendar.getPopupContent());
-
-        newRoot.getChildren().addAll(correctBox, wrongBox);
+        newRoot.getChildren().addAll(calendarBox, correctBox, wrongBox);
         newRoot.setAlignment(Pos.TOP_CENTER);
         Scene scene2 = new Scene(newRoot, 800, 400);
         Stage stage2 = new Stage();

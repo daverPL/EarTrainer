@@ -31,18 +31,13 @@ public class EarTrainer {
         chordsCount = 8;
         chords = new Chord[chordsCount];
 
-        // Default preferences in future set after picking in UI
         UserIntervals = new ArrayList<>();
         UserChords = new ArrayList<>();
-        ArrayList <Integer> Speeds = new ArrayList<>();
         ArrayList <Integer> Types = new ArrayList<>();
-
-
-        Speeds.add(0);
         Types.add(0);
         Types.add(1);
 
-        userPreferences = new PlayerPreferences(Speeds, Directions, Types);
+        userPreferences = new PlayerPreferences(Directions, Types);
 
         // Setting set of all chords and intervals:
         setIntervals();
@@ -79,8 +74,6 @@ public class EarTrainer {
         oos.writeObject(wrongByDay);
         oos.close();
         fos.close();
-
-
     }
 
     boolean question() throws IOException{
